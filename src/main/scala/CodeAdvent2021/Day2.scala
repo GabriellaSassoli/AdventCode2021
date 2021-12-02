@@ -6,8 +6,7 @@ object Day2 {
 
   val lineRegex = "(\\w+) (\\d+)".r
   case class Movement(direction: String, step: Int)
-//read file and unwrap with regex
-  // read with case class that does up, down, forward ... probably no need of 3 functions. lol
+
   def main(args: Array[String]): Unit = {
     val input = Source.fromFile("/Users/sassolig/StudingProjects/CodeAdvent2021/src/main/scala/CodeAdvent2021/Day2Input").getLines.toArray
 
