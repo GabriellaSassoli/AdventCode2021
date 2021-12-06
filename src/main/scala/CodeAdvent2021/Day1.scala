@@ -5,7 +5,7 @@ import scala.io.Source
 object Day1 {
 
   def main(args: Array[String]): Unit = {
-    val input = Source.fromFile("/Users/sassolig/StudingProjects/CodeAdvent2021/src/main/resources/Day1Input").getLines.toArray
+    val input = Source.fromFile("src/main/resources/Day1Input").getLines.toArray
     val inputNumbers: Array[Int] = input.map(number => number.toInt)
 
     println(s"Step of one: ${numberOfIncreases(1, inputNumbers)}")

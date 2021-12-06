@@ -9,7 +9,7 @@ object Day2 {
   case class Movement(direction: String, step: Int)
 
   def main(args: Array[String]): Unit = {
-    val input: Array[String] = Source.fromFile("/Users/sassolig/StudingProjects/CodeAdvent2021/src/main/resources/Day2Input").getLines.toArray
+    val input: Array[String] = Source.fromFile("/src/main/resources/Day2Input").getLines.toArray
 
 
     val finalPositionSolution = finalPosition(input)
