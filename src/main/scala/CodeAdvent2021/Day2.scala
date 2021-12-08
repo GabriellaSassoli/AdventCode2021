@@ -30,6 +30,13 @@ object Day2 {
     }
   }
 
+  def finalPosition(input:Array[String])={
+    input
+      .map{ line => parse(line)}
+      .map{ movement => move(movement)}
+      .foldLeft(0,0){case ((a,b),(c,d)) => (a+c,b+d)}
+  }
+
   def parse(line: String): Movement =
     line match {
       case lineRegex(direction, movement) => Movement(direction, movement.toInt)
@@ -46,12 +53,7 @@ object Day2 {
       }
     }
 
-  def finalPosition(input:Array[String])={
-    input
-      .map{ line => parse(line)}
-      .map{ movement => move(movement)}
-      .foldLeft(0,0){case ((a,b),(c,d)) => (a+c,b+d)}
-  }
+
 
   def finalPosition2(input:Array[String]) = {
     input

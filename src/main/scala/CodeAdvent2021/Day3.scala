@@ -3,14 +3,15 @@ package CodeAdvent2021
 import com.sun.tools.doclets.internal.toolkit.util.DocFinder.Input
 
 import java.security.Identity
+import scala.::
 import scala.io.Source
 
 object Day3 {
 
   def main(args: Array[String]): Unit = {
-    /// dividere strings into array of ones, count how many 1 present in first element of every array and ( other function) finally if count is greater than half height gamma 1 epsilon 0 or other way round
     val input: List[String] = readInput("src/main/resources/Day3Input")
     println(solution(input))
+    println(solutionPart2(input))
 
   }
 
@@ -18,12 +19,12 @@ object Day3 {
     Source.fromFile(filepath).getLines.toList
   }
 
-  def findGammaRate(input: List[String]): String = {
-    input.transpose.map(findMostCommonElementInCollection).mkString
+  def findGammaRate(input: List[String]): Seq[Char] = {
+    input.transpose.map(findMostCommonElementInCollection)
   }
 
-  def findEpsilonRate(input: List[String]): String = {
-    input.transpose.map(findLeastCommonElementInCollection).mkString
+  def findEpsilonRate(input: List[String]): Seq[Char] = {
+    input.transpose.map(findLeastCommonElementInCollection)
   }
 
   def convertBinaryToDecimal(binaryNumber: String): Int = {
@@ -39,7 +40,39 @@ object Day3 {
   }
 
   def solution(input:List[String]): Int ={
-    convertBinaryToDecimal(findGammaRate(input)) * convertBinaryToDecimal(findEpsilonRate(input))
+    convertBinaryToDecimal(findGammaRate(input).mkString) * convertBinaryToDecimal(findEpsilonRate(input).mkString)
+  }
+
+  def solutionPart2(input:List[String]): Int = {
+    convertBinaryToDecimal(OxygenGeneratorRating(input)) * convertBinaryToDecimal(CO2ScrubberRating(input))
+  }
+
+  def OxygenGeneratorRating(input:List[String]): String = {
+    // need to do a getOxygenRating function. I'll start with doing just the first one :)
+    getRating(mostCommonNumber = findGammaRate,input = input)
+    }
+
+  def CO2ScrubberRating(input:List[String]): String = {
+    getRating(mostCommonNumber = findEpsilonRate,input = input)
+  }
+
+
+  //recursive function calling different function as required
+  def getRating(result: Seq[Any] = Seq.empty,
+                      mostCommonNumber: List[String] => Seq[Char],
+                      input: List[String]
+                     ): String = {
+    mostCommonNumber(input) match {
+
+      case _ :: Nil =>
+
+        result.mkString
+
+      case commonNumber :: _ =>
+
+        val filteredValues: List[String] = input.filter{ number => number.startsWith(commonNumber.toString) }.collect(x => x.tail)
+        getRating(result :+ commonNumber, mostCommonNumber, filteredValues)
+    }
   }
 
 }
