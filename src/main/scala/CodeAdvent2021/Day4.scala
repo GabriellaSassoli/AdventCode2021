@@ -9,7 +9,7 @@ object Day4 {
 object Main {
 
   def main(args: Array[String]): Unit = {
-    val input: List[String] = Source.fromFile("src/main/resources/Day4Input").getLines.toList
+    val input: List[String] = Source.fromResource("2021/Day1Input.txt").getLines.toList
 
   }
 }

@@ -8,7 +8,7 @@ object Day2 {
 
   def main(args: Array[String]): Unit = {
 
-    val input = Source.fromFile("/Users/sassolig/StudingProjects/CodeAdvent2021/src/main/scala/CodeAdvent2020/Day2Input").getLines.toArray
+    val input = Source.fromResource("2020/Day2Input.txt").getLines.toArray
 
     case class Policy(low: Int, high: Int, char: Char)
 

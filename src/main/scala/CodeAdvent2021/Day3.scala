@@ -13,7 +13,7 @@ object Day3 {
   }
 
   def readInput(filepath: String) = {
-    Source.fromFile(filepath).getLines.toList
+    Source.fromResource("2021/Day1Input.txt").getLines.toList
   }
 
   def findGammaRate(input: List[String]): Seq[Char] = {

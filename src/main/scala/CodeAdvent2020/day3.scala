@@ -6,7 +6,7 @@ import scala.io.Source
 object day3 {
   def main(args: Array[String]): Unit = {
 
-    val input = Source.fromFile("/Users/sassolig/StudingProjects/CodeAdvent2021/src/main/scala/CodeAdvent2020/Day3Input").getLines.toArray
+    val input = Source.fromResource("2020/Day3Input.txt").getLines.toArray
     val grill: Array[Array[Char]] = input.map(line => line.toArray)
     val height: Int = input.length
     val length: Array[Int] = input
