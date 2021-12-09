@@ -1,2 +1,0 @@
-[debug] Created transactional ClassFileManager with tempDir = /Users/dsa25/OpenSource/AdventCode2021/project/target/scala-2.12/sbt-1.0/classes.bak
-[debug] Removing the temporary directory used for backing up class files: /Users/dsa25/OpenSource/AdventCode2021/project/target/scala-2.12/sbt-1.0/classes.bak
