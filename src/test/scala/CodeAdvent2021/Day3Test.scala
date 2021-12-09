@@ -54,12 +54,12 @@ class Day3Test extends FlatSpec with Matchers {
   behavior of "getRating"
   it should "get Oxygen rating when findGamma funcion passed" in {
     val input = Day3.readInput(testFilePath)
-    Day3.getRating(mostCommonNumber = findGammaRate,input = input) shouldBe "10111"
+    Day3.getRating(mostLeastCommonNumber = findGammaRate,input = input) shouldBe "10111"
   }
 
   it should "get CO2ScrubberRating rating when findGammaEpsilonRate passed" in {
     val input = Day3.readInput(testFilePath)
-    Day3.getRating(mostCommonNumber = findEpsilonRate,input = input) shouldBe "01010"
+    Day3.getRating(mostLeastCommonNumber = findEpsilonRate,input = input) shouldBe "01010"
   }
 
 
