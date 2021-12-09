@@ -3,7 +3,7 @@ package CodeAdvent2020
 import scala.::
 import scala.io.Source
 
-object day3 {
+object Day3 {
   def main(args: Array[String]): Unit = {
 
     val input = Source.fromResource("2020/Day3Input.txt").getLines.toArray
