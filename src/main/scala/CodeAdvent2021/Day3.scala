@@ -54,10 +54,8 @@ object Day3 {
   }
 
   def leastCommon(input:List[String]) = {
-    val sizeMap = input.transpose.map {
-          value => value.groupBy(identity).view.mapValues(_.size)}
-
-    sizeMap.collect{
+    input.transpose.map {
+          value => value.groupBy(identity).view.mapValues(_.size)}.collect{
       case value if value.get('1') == value.get('0') => '0'
       case value => value.minBy(_._2)._1
     }
@@ -75,8 +73,10 @@ object Day3 {
         (result :+ commonNumber).mkString
 
       case commonNumber :: _ =>
+
         val filteredValues: List[String] = input.filter{ number => number.startsWith(commonNumber.toString) }.collect(x => x.tail)
         getRating(result :+ commonNumber, mostLeastCommonNumber, filteredValues)
+
     }
   }
 
