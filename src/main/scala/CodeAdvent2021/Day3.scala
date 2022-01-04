@@ -9,49 +9,38 @@ object Day3 {
     val input: List[String] = readInput("src/main/resources/Day3Input")
     println(solution(input))
     println(solutionPart2(input))
-
   }
 
-  def readInput(filepath: String) = {
-    Source.fromFile(filepath).getLines.toList
-  }
+  def readInput(filepath: String) =
+    Source.fromResource(filepath).getLines.toList
 
-  def findGammaRate(input: List[String]): Seq[Char] = {
+  def findGammaRate(input: List[String]): Seq[Char] =
     input.transpose.map(findMostCommonElementInCollection)
-  }
 
-  def findEpsilonRate(input: List[String]): Seq[Char] = {
+  def findEpsilonRate(input: List[String]): Seq[Char] =
     input.transpose.map(findLeastCommonElementInCollection)
-  }
 
-  def convertBinaryToDecimal(binaryNumber: String): Int = {
+  def convertBinaryToDecimal(binaryNumber: String): Int =
     Integer.parseInt(binaryNumber, 2)
-  }
 
-  def findMostCommonElementInCollection[A](coll: Seq[A]): A = {
+  def findMostCommonElementInCollection[A](coll: Seq[A]): A =
     coll.groupBy(identity).view.mapValues(_.size).maxBy(_._2)._1
-  }
 
-  def findLeastCommonElementInCollection[A](coll: Seq[A]): A = {
+  def findLeastCommonElementInCollection[A](coll: Seq[A]): A =
     coll.groupBy(identity).view.mapValues(_.size).minBy(_._2)._1
-  }
 
-  def solution(input:List[String]): Int ={
+  def solution(input:List[String]): Int =
     convertBinaryToDecimal(findGammaRate(input).mkString) * convertBinaryToDecimal(findEpsilonRate(input).mkString)
-  }
 
   //part 2
-  def solutionPart2(input:List[String]): Int = {
+  def solutionPart2(input:List[String]): Int =
     convertBinaryToDecimal(OxygenGeneratorRating(input)) * convertBinaryToDecimal(CO2ScrubberRating(input))
-  }
 
-  def OxygenGeneratorRating(input:List[String]): String = {
+  def OxygenGeneratorRating(input:List[String]): String =
     getRating(mostLeastCommonNumber = findGammaRate,input = input)
-    }
 
-  def CO2ScrubberRating(input:List[String]): String = {
+  def CO2ScrubberRating(input:List[String]): String =
     getRating(mostLeastCommonNumber = leastCommon,input = input)
-  }
 
   def leastCommon(input:List[String]) = {
     input.transpose.map {
@@ -79,7 +68,6 @@ object Day3 {
 
     }
   }
-
 
 }
 
