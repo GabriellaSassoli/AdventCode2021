@@ -2,6 +2,7 @@ package CodeAdvent2021
 
 import CodeAdvent2021.Day4.solution
 
+import scala.annotation.tailrec
 import scala.io.Source
 
 object Day4 {
@@ -12,8 +13,9 @@ object Day4 {
 
 
    val boards = getBoards(input)
+  val extractionNumbers: Seq[Int] = getExtractionNumber(input)
 
-//   val extractionNumbers: Seq[Int] = getExtractionNumber(input)
+
 //   println(extractionNumbers(0))
 //   println(mark(extractionNumbers(0),boards))
 //   println(checkMark(mark(extractionNumbers(0),boards)))
@@ -22,14 +24,31 @@ object Day4 {
    //step 3 check marks
    // if row is marked then calculate not marked numbers of the board else go on
 
+   //To do:
+   //1. recursive function to loop through extracted number until one line is marked
+   //2. get board numbers and some the not marked ones.
+
+
  }
 
-  def checkMark(boards: Boards): Seq[List[Option[Int]]] ={
+  @tailrec
+  def extractionWinner(extractionNumbers:List[Int], boards: Boards, winningBoard: Seq[Int] ): List[Seq[(Int, Int)]] ={
+      winningBoard match {
+        case Nil => {
+                      val markedBoards: Boards = mark(extractionNumbers.head,boards)
+                      extractionWinner(extractionNumbers.tail, markedBoards,getWinningBoard(markedBoards))
+                    }
+        case List(winner) => boards.board(winner)._1
+      }
+  }
+
+  def getWinningBoard(boards: Boards): Seq[Int] ={
     boards.board.collect{
       boardMatrix => boardMatrix._1
         .map{ line => line.map(value => value._2)}
         .map{value => if(value.sum == 5) Some(boardMatrix._2) else None}
-    }
+        .flatten
+    }.flatten
   }
 
   def mark(extractedNumber: Int, boards: Boards): Boards = {
@@ -44,7 +63,7 @@ object Day4 {
 
   }
 
-  def getExtractionNumber(input: List[String])={
+  def getExtractionNumber(input: List[String]): List[Int]={
     input.splitAt(1)._1.map(_.split(",")).flatten.map{_.toInt}
   }
 
