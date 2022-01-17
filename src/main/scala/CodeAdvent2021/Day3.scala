@@ -6,7 +6,7 @@ import scala.io.Source.DefaultBufSize.>
 object Day3 {
 
   def main(args: Array[String]): Unit = {
-    val input: List[String] = readInput("src/main/resources/Day3Input")
+    val input: List[String] = readInput("2021/Day3Input.txt")
     println(solution(input))
     println(solutionPart2(input))
   }
@@ -62,7 +62,6 @@ object Day3 {
         (result :+ commonNumber).mkString
 
       case commonNumber :: _ =>
-
         val filteredValues: List[String] = input.filter{ number => number.startsWith(commonNumber.toString) }.collect(x => x.tail)
         getRating(result :+ commonNumber, mostLeastCommonNumber, filteredValues)
 
