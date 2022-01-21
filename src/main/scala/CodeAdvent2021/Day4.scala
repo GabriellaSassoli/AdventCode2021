@@ -7,7 +7,9 @@ import scala.io.Source
 
 object Day4 {
 
-  case class MarkBoards(board: List[(List[Seq[(Int, Int)]], Int)]) // create 2 values second called boardIndex
+  type BoardIndex = Int
+
+  case class MarkBoards(board: List[(List[Seq[(Int, Int)]],Int)]) // create 2 values second called boardIndex
   case class Winner(board: Seq[Seq[(Int, Int)]], lastExtractedNumber: Option[Int], winnerBoardNumber: Option[Int])
 
 

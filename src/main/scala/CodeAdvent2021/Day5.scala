@@ -2,6 +2,8 @@ package CodeAdvent2021
 
 
 
+import CodeAdvent2021.Day5.{getStep, getVentilatorsPosition}
+
 import scala.io.Source
 
 
@@ -9,87 +11,77 @@ object Day5 {
 
   val lineRegex = "(\\d+),(\\d+) -> (\\d+),(\\d+)".r
 
-  case class Coordinates(x: Int, y: Int)
-  type Grill = Array[Array[Int]]
-  type VentilatorCoordinates = Seq[(Coordinates, Coordinates)]
+  case class Position(x: Int, y: Int)
 
-  // Step 1: Read input using regex
-  // Step 2: create Grill
-  // Step 3: put input into (x,y, value) case class
-  // Step 4: find max value of value field
-  // Step 5: find how many time number is present.
+  case class VentilatorStartEndPosition(start: Position, end: Position)
 
+  type VentilatorsPositions = Seq[Position]
 
   def main(args: Array[String]): Unit = {
-
     val input: Seq[String] = readInput("2021/Day5Input.txt")
-    val coordinates: VentilatorCoordinates = grillCoordinates(input)
-    val initialGrill = createGrill(coordinates)
-    val coordinatesToConsider = coordinatesConsidered(coordinates)
-    val grill = fillGrill(initialGrill,coordinatesToConsider)
-    println(getOverlapsPoints(grill))
+
+    val resultPart1 = input.map { line => parse(line) }
+      .filter(positions => filterCoordinates(positions))
+      .flatMap(position => getVentilatorsPosition(position))
+      .groupBy(obj => obj)
+      .count(value => value._2.length >= 2)
+
+    println(s"Result part1: $resultPart1")
+
+    // Note every corner between coordinates is 45 degrees for triangles properties
+
+    val resultPart2 =
+      input.map{line => parse(line)}
+        .flatMap(position => getVentilatorsPosition(position))
+        .groupBy(obj => obj)
+        .count(value => value._2.length >= 2)
+    println(s"resultPart2 $resultPart2")
 
   }
 
   def readInput(filepath: String): Seq[String] =
     Source.fromResource(filepath).getLines.toList
 
-  // manipulating input
-
-  def parse(line: String): (Coordinates,Coordinates) =
+  def parse(line: String): VentilatorStartEndPosition =
     line match {
-      case lineRegex(x1, y1, x2,y2) => (Coordinates(x1.toInt,y1.toInt), Coordinates(x2.toInt, y2.toInt))
+      case lineRegex(x1, y1, x2, y2) => VentilatorStartEndPosition(Position(x1.toInt, y1.toInt), Position(x2.toInt, y2.toInt))
     }
 
-  def grillCoordinates(input:Seq[String]): VentilatorCoordinates = {
-    input
-      .map{ line => parse(line)}
-  }
+  def filterCoordinates(position: VentilatorStartEndPosition): Boolean =
+    position.start.x == position.end.x || position.start.y == position.end.y
 
-  def createGrill(coordinates: Seq[(Coordinates, Coordinates)]): Grill = {
+  def getVentilatorsPosition(point: VentilatorStartEndPosition): VentilatorsPositions = {
+    if (point.start.x == point.end.x) {
+      val loopStep = getStep(point.start.y, point.end.y)
 
-    //could start empty
-    val rows = coordinates.flatMap(coordinates => List(coordinates._1.x, coordinates._2.x)).max
-    val cols = coordinates.flatMap(coordinates => List(coordinates._1.y, coordinates._2.y)).max
-
-    Array.ofDim[Int](rows + 1, cols + 1)
-
-  }
-
-  def fillGrill(grill: Grill, fillingCoordinates: VentilatorCoordinates ): Grill ={
-    //fillingCoordinates are already filtered coordinates
-    fillingCoordinates.collect {
-      case coordinates if coordinates._1.x == coordinates._2.x  && coordinates._2.y > coordinates._1.y =>
-        (coordinates._1.y to coordinates._2.y)
-          .foreach(cell => grill(coordinates._1.x)(cell) = add(grill,Coordinates(coordinates._1.x,cell)))
-      case coordinates if coordinates._1.x == coordinates._2.x  && coordinates._1.y > coordinates._2.y =>
-        (coordinates._2.y to coordinates._1.y)
-          .foreach(cell => grill(coordinates._1.x)(cell) = add(grill,Coordinates(coordinates._1.x,cell)))
-      case coordinates if coordinates._1.y == coordinates._2.y  && coordinates._2.x > coordinates._1.x =>
-        (coordinates._1.x to coordinates._2.x)
-          .foreach(cell => grill(cell)(coordinates._1.y) = add(grill,Coordinates(cell,coordinates._1.y)))
-      case coordinates if coordinates._1.y == coordinates._2.y && coordinates._1.x > coordinates._2.x =>
-        (coordinates._2.x to coordinates._1.x)
-          .foreach(cell => grill(cell)(coordinates._1.y) = add(grill,Coordinates(cell,coordinates._1.y)))
+      (point.start.y to point.end.y by loopStep).collect {
+        case cell => Position(point.start.x, cell)
+      }
     }
-    grill.transpose
-  }
+    else if (point.start.y == point.end.y) {
+      val loopStep = getStep(point.start.x, point.end.x)
 
-  def coordinatesConsidered(grillCoordinates: VentilatorCoordinates ): VentilatorCoordinates ={
-    grillCoordinates.filter{
-      coordinate =>
-        (coordinate._1.x == coordinate._2.x || coordinate._1.y == coordinate._2.y)
+      (point.start.x to point.end.x by loopStep).collect {
+        case cell => Position(cell, point.start.y)
+      }
+    }
+    else {
+      getDiagonalPosition(point)
     }
   }
 
-  def add(grill: Grill, coordinates: Coordinates): Int ={
-    grill(coordinates.x)(coordinates.y) match {
-      case 0 =>  1
-      case value => value + 1
+  def getDiagonalPosition(point: VentilatorStartEndPosition) : VentilatorsPositions = {
+    val loopStepX = getStep(point.start.x,point.end.x)
+    val loopStepY = getStep(point.start.y,point.end.y)
+
+    ((point.start.x to point.end.x by loopStepX) zip (point.start.y to point.end.y by loopStepY)).collect{
+      case cell => Position(cell._1, cell._2)
     }
   }
 
-  def getOverlapsPoints(grill:Grill) ={
-    grill.flatMap(value => value.filter(_ > 1)).length
+  def getStep(value1: Int, value2: Int): Int = {
+    if (value1 > value2) -1
+    else 1
   }
+
 }

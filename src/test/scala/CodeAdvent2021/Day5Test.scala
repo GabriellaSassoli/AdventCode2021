@@ -1,8 +1,9 @@
 package CodeAdvent2021
 
 import CodeAdvent2021.Day4Main.getInput
-import CodeAdvent2021.Day5.{Coordinates, Grill}
+import CodeAdvent2021.Day5.{Position, VentilatorStartEndPosition}
 import org.scalatest.{FlatSpec, Matchers}
+import sun.font.TrueTypeFont
 
 import scala.Console.in
 
@@ -15,45 +16,43 @@ class Day5Test extends FlatSpec with Matchers {
   it should "return parsed input" in {
     Day5.parse("5,5 -> 8,2")
   }
-  behavior of "GrillCoordinates"
-  it should "return tuple of grill coordinates" in  {
-    println(Day5.grillCoordinates(input))
-    Day5.grillCoordinates(input) shouldBe List((Coordinates(0,9),Coordinates(5,9)), (Coordinates(8,0),Coordinates(0,8)), (Coordinates(9,4),Coordinates(3,4)), (Coordinates(2,2),Coordinates(2,1)), (Coordinates(7,0),Coordinates(7,4)), (Coordinates(6,4),Coordinates(2,0)), (Coordinates(0,9),Coordinates(2,9)), (Coordinates(3,4),Coordinates(1,4)), (Coordinates(0,0),Coordinates(8,8)), (Coordinates(5,5),Coordinates(8,2)))
+
+
+  behavior of "filterCoordinates"
+  it should "return a boolean to say if value is valid or not" in {
+    val coordinatesToFilterTrue = VentilatorStartEndPosition(Position(1,0), Position(0,0))
+    val coordinatesToFilterFalse = VentilatorStartEndPosition(Position(1,1), Position(0,0))
+
+    Day5.filterCoordinates(coordinatesToFilterTrue) shouldBe true
+    Day5.filterCoordinates(coordinatesToFilterFalse) shouldBe false
   }
 
-  behavior of "createGrill"
-  it should "return an empty grill of 10 X 10" in {
-    val grill: Grill = Day5.createGrill(Day5.grillCoordinates(input))
-    grill.length shouldBe 10
-    grill.map(_.length) shouldBe Array(10, 10, 10, 10, 10, 10, 10, 10, 10,10)
+  behavior of "getVentilatorsPosition"
+  it should "return list of points with Ventilators" in {
+    val coordinatesStartEndPositionsX = VentilatorStartEndPosition(Position(0,0), Position(0,2))
+    val coordinatesStartEndPositionsY= VentilatorStartEndPosition(Position(2,0), Position(0,0))
+    val coordinatesStartEndPositionsDiagonal = VentilatorStartEndPosition(Position(3,1), Position(0,0))
+
+    Day5.getVentilatorsPosition(coordinatesStartEndPositionsX) shouldBe Seq(Position(0,0), Position(0,1),Position(0,2))
+    Day5.getVentilatorsPosition(coordinatesStartEndPositionsY) shouldBe Seq(Position(2,0), Position(1,0), Position(0,0))
+    Day5.getVentilatorsPosition(coordinatesStartEndPositionsDiagonal) shouldBe Seq(Position(3,1), Position(2,0))
+
   }
 
-  behavior of "coordinatesConsidered"
-  it should "return a grill filled with every value" in {
-    val coordinates = Day5.grillCoordinates(input)
-    Day5.coordinatesConsidered(coordinates) shouldBe List((Coordinates(0,9),Coordinates(5,9)), (Coordinates(9,4),Coordinates(3,4)), (Coordinates(2,2),Coordinates(2,1)), (Coordinates(7,0),Coordinates(7,4)), (Coordinates(0,9),Coordinates(2,9)), (Coordinates(3,4),Coordinates(1,4)))
+  behavior of "getStartEndLoop"
+  it should "return the smallest value as first value and the biggest as second value" in {
+
+    Day5.getStep(0,4) shouldBe 1
+    Day5.getStep(4,0) shouldBe -1
+    Day5.getStep(0,0) shouldBe 1
+
   }
 
-  behavior of "fillGrill"
-  it should "return a grill with the correct elements filled" in {
-    val grill: Grill = Day5.createGrill(Day5.grillCoordinates(input))
-    val coordinates = Day5.grillCoordinates(input)
+  behavior of "getDiagonalPosition"
+  it should "return diagonal points" in {
 
-    Day5.fillGrill(grill,Day5.coordinatesConsidered(coordinates)) shouldBe Array(Array(0, 0, 0, 0, 0, 0, 0, 1, 0, 0), Array(0, 0, 1, 0, 0, 0, 0, 1, 0, 0), Array(0, 0, 1, 0, 0, 0, 0, 1, 0, 0), Array(0, 0, 0, 0, 0, 0, 0, 1, 0, 0), Array(0, 1, 1, 2, 1, 1, 1, 2, 1, 1), Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), Array(2, 2, 2, 1, 1, 1, 0, 0, 0, 0))
-  }
-
-  behavior of "add"
-  it should "add a value in the grill" in {
-    val grill: Grill = Array(Array(0,5,0,0,2))
-    Day5.add(grill, Coordinates(0,1)) shouldBe 6
-    Day5.add(grill, Coordinates(0,2)) shouldBe 1
-    Day5.add(grill, Coordinates(0,4)) shouldBe 3
-  }
-
-  behavior of "getOverlapsPoints"
-  it should "Return number of points greater than 1" in {
-    val grill: Grill = Array(Array(0,5,0,1,2))
-    Day5.getOverlapsPoints(grill) shouldBe 2
+    Day5.getDiagonalPosition(VentilatorStartEndPosition(Position(1,1), Position(3,3))) shouldBe Seq(Position(1,1), Position(2,2),Position(3,3))
+    Day5.getDiagonalPosition(VentilatorStartEndPosition(Position(9,7), Position(7,9))) shouldBe Seq(Position(9,7), Position(8,8),Position(7,9))
   }
 
 }
