@@ -54,7 +54,7 @@ object Day5 {
     if (point.start.x == point.end.x) {
       val loopStep = getStep(point.start.y, point.end.y)
 
-      (point.start.y to point.end.y by loopStep).collect {
+      (point.start.y to point.end.y by loopStep).collect{
         case cell => Position(point.start.x, cell)
       }
     }
