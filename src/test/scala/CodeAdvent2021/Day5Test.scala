@@ -1,16 +1,13 @@
 package CodeAdvent2021
 
-import CodeAdvent2021.Day4Main.getInput
-import CodeAdvent2021.Day5.{Position, VentilatorStartEndPosition}
-import org.scalatest.{FlatSpec, Matchers}
-import sun.font.TrueTypeFont
 
-import scala.Console.in
+import CodeAdvent2021.Day5.{Position, VentilatorStartEndPosition, readInput}
+import org.scalatest.{FlatSpec, Matchers}
 
 class Day5Test extends FlatSpec with Matchers {
 
-  val testFilePath = "src/test/resources/test-input-5"
-  val input: Seq[String] = getInput(testFilePath)
+  val testFilePath = "test-input-5"
+  val input: Seq[String] = readInput(testFilePath)
 
   behavior of "parse"
   it should "return parsed input" in {

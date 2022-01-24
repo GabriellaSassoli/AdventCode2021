@@ -1,9 +1,5 @@
 package CodeAdvent2021
 
-
-
-import CodeAdvent2021.Day5.{getStep, getVentilatorsPosition}
-
 import scala.io.Source
 
 
@@ -35,6 +31,7 @@ object Day5 {
         .flatMap(position => getVentilatorsPosition(position))
         .groupBy(obj => obj)
         .count(value => value._2.length >= 2)
+
     println(s"resultPart2 $resultPart2")
 
   }
