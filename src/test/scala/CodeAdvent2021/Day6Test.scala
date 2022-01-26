@@ -2,8 +2,6 @@ package CodeAdvent2021
 
 import org.scalatest.{FlatSpec, Matchers}
 
-import scala.collection.MapView
-
 class Day6Test extends FlatSpec with Matchers{
 
   val testFilePath = "test-input-6"
