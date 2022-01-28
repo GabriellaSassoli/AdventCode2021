@@ -1,5 +1,6 @@
 package CodeAdvent2021
 
+import scala.annotation.tailrec
 import scala.io.Source
 import scala.io.Source.DefaultBufSize.>
 
@@ -51,15 +52,14 @@ object Day3 {
   }
 
   //recursive function calling different function as required
-  def getRating(result: Seq[Any] = Seq.empty,
+  @tailrec
+  def getRating(result: Seq[Char] = Seq.empty,
                 mostLeastCommonNumber: List[String] => Seq[Char],
                 input: List[String]
                      ): String = {
     mostLeastCommonNumber(input) match {
 
-      case commonNumber :: Nil =>
-
-        (result :+ commonNumber).mkString
+      case Nil => result.mkString
 
       case commonNumber :: _ =>
         val filteredValues: List[String] = input.filter{ number => number.startsWith(commonNumber.toString) }.collect(x => x.tail)

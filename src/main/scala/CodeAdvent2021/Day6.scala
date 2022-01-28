@@ -14,17 +14,8 @@ object Day6 {
     println(s"lanternfish after 256 days ${sumMapValues(lanternfisheGrowpart2(createLanternfishMap(input),0,256))}")
   }
 
-  def sumMapValues(lanternfishMap: Map[RemainingDays, LanternfishNumber]): BigInt = {
-    lanternfishMap.collect{
-      case (_,value) => value
-    }.sum
-  }
-
   def readInput(filepath: String): Lanternfishes =
     Source.fromResource(filepath).getLines.toList.flatMap(lanternfish=> lanternfish.split(",")).map(_.toInt)
-
-  def createLanternfishMap(lanternfishes: Lanternfishes): Map[RemainingDays, LanternfishNumber] =
-    lanternfishes.groupBy(identity).mapValues(value => BigInt(value.size)).toMap
 
   //returns the new fishes
   def lanternfishCycle(lanternfishes: Lanternfishes, day: Int, nDaysTotal: Int): Seq[Int] = {
@@ -43,6 +34,16 @@ object Day6 {
       lanternfishes
     }
 
+  }
+
+  //part 2
+
+  def createLanternfishMap(lanternfishes: Lanternfishes): Map[RemainingDays, LanternfishNumber] =
+    lanternfishes.groupBy(identity).mapValues(value => BigInt(value.size)).toMap
+  def sumMapValues(lanternfishMap: Map[RemainingDays, LanternfishNumber]): BigInt = {
+    lanternfishMap.collect{
+      case (_,value) => value
+    }.sum
   }
 
   def lanternfisheGrowpart2(lanternfishes: Map[RemainingDays,LanternfishNumber], day: Int, nDaysTotal: Int): Map[RemainingDays, LanternfishNumber] = {

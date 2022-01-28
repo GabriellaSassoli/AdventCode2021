@@ -9,7 +9,6 @@ object Day7 {
     println(s"part 2 result: ${(input.min to input.max).map{position=> getFuelPerPositionPart2(input,position)}.min}")
   }
 
-
   def getFuelPerPosition(crabPositions: Seq[Int],position: Int): BigInt={
     crabPositions.map{
       positionCrab2 =>
