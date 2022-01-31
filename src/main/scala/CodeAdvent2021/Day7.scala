@@ -7,6 +7,7 @@ object Day7 {
     val input: Seq[Int] = Day6.readInput("2021/Day7Input.txt")
     println(s"part 1 result ${(input.min to input.max).map{position => getFuelPerPosition(input,position)}.min}")
     println(s"part 2 result: ${(input.min to input.max).map{position=> getFuelPerPositionPart2(input,position)}.min}")
+
   }
 
   def getFuelPerPosition(crabPositions: Seq[Int],position: Int): BigInt={
